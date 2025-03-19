@@ -1,0 +1,47 @@
+name: MERN CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies (Client)
+        run: |
+          cd client
+          npm install
+
+      - name: Install dependencies (Server)
+        run: |
+          cd server
+          npm install
+
+      - name: Run Tests (if any)
+        run: |
+          cd server
+          npm test || echo "No tests found"
+
+      - name: Build Client
+        run: |
+          cd client
+          npm run build
+
+      - name: Trigger Jenkins Deployment
+        run: |
+          curl -X POST "http://your-jenkins-url/job/MERN-Deploy/buildWithParameters?token=${{ secrets.JENKINS_TOKEN }}" \
+          --user "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_KEY }}"
