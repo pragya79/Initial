@@ -43,5 +43,5 @@ jobs:
 
       - name: Trigger Jenkins Deployment
         run: |
-          curl -X POST "http://localhost:8080/job/The_Poppy_Pie/buildWithParameters?token=${{ secrets.JENKINS_TOKEN }}" \
+          curl -X POST "https://8862-2401-4900-8130-8f90-6df4-8e38-26b6-b03f.ngrok-free.app/job/The_Poppy_Pie/buildWithParameters?token=${{ secrets.JENKINS_TOKEN }}" \
           --user "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_KEY }}"
